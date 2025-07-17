@@ -1,3 +1,4 @@
+require 'spec_helper'
 require_relative '../../lib/contract_termination/policy_selector'
 require_relative '../../lib/contract_termination/termination_request'
 

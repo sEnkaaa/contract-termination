@@ -6,10 +6,6 @@ module ContractTermination
     def self.select_policy(termination_request)
       contract = termination_request.contract
 
-      unless contract.is_a?(ContractTermination::Contract)
-        raise ArgumentError, "Expected a Contract object, got #{contract.class}"
-      end
-
       case contract.contract_type
       when :iard
         if contract.current_effective_start_date(termination_request.requested_termination_date) >= Date.new(2024, 10,

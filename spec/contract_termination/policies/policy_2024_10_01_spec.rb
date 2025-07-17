@@ -1,3 +1,4 @@
+require 'spec_helper'
 require_relative '../../../lib/contract_termination/policies/policy_2024_10_01'
 require_relative '../../../lib/contract_termination/policies/policy_2014_04_04'
 require_relative '../../../lib/contract_termination/contract'

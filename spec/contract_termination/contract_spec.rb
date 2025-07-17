@@ -1,3 +1,5 @@
+
+require 'spec_helper'
 require 'date'
 require_relative '../../lib/contract_termination/contract'
 
