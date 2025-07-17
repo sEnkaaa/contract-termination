@@ -1,31 +1,30 @@
-# ContractTermination
+# 📄 ContractTermination – Module Ruby pour la résiliation d’assurance
 
-## Description
+## 🧾 Description
 
-`ContractTermination` est un module Ruby permettant de calculer la **date de résiliation au plus tôt possible** d’un contrat d’assurance selon les règles légales en vigueur, notamment la nouvelle réglementation entrée en vigueur en octobre 2024.  
+`ContractTermination` est un module Ruby permettant de calculer automatiquement la **première date légale possible de résiliation** d’un contrat d’assurance selon les règles légales en vigueur, notamment la nouvelle réglementation entrée en vigueur en le 1er octobre 2024.  
 
 Ce module est conçu pour être intégré facilement dans n’importe quelle partie d’une application Ruby, sans dépendance à Rails.
 
 ---
 
-## Contexte métier
+## ⚖️ Contexte métier
 
-Depuis fin 2024, la loi belge a assoupli les règles de résiliation des contrats d’assurance, notamment en réduisant les préavis obligatoires, permettant ainsi aux assurés de résilier leur contrat plus facilement et rapidement.  
+Depuis le 1er octobre 2024, la législation belge a assoupli les règles de résiliation des contrats d’assurance, notamment en réduisant les préavis obligatoires, permettant ainsi aux assurés de résilier leur contrat plus facilement et rapidement.  
 
 Ce module applique ces règles afin de fournir la date à partir de laquelle la résiliation est effectivement possible.
 
 ---
 
-## Contrats pris en charge
+## 📦 Types de contrats pris en charge
 
-- **Contrats IARD** (Incendie, Risques Divers), notamment habitation, voiture, moto.  
-- **Exclusion des contrats vie**, qui sont régis par une réglementation différente.
+- **Contrats IARD** (Incendie, Risques Divers), notamment habitation, voiture, moto.
 
 ---
 
-## Usage
+## 🚀 Utilisation
 
-La méthode principale est :
+La méthode principale à appeler est :
 
 ```ruby
 ContractTermination.earliest_termination_date(
@@ -35,23 +34,26 @@ ContractTermination.earliest_termination_date(
 )
 ```
 
-## Arguments
+## ⚙️ Paramètres d'entrée
 
 - `contract_type` : **Symbol**  
   Type de contrat. Actuellement, seul le type `:iard` est supporté.
 
 - `contract_initial_effective_start_date` : **Date**  
-  Date de prise d’effet initiale du contrat, avant toute éventuelle reconduction.
+  Date de prise d’effet initiale du contrat (hors renouvellements annuels).
 
 - `requested_termination_date` : **Date** (optionnel)  
   Date à partir de laquelle on souhaite calculer la date de résiliation la plus proche. Par défaut, c’est la date du jour (`Date.today`).
 
-## Retour
+## 🔁 Valeur de retour
 Une instance Date correspondant à la date la plus proche à partir de laquelle la résiliation est possible légalement.
+```ruby
+#<Date>  # Première date légale de résiliation calculée par le module
+```
 
-## Règles métiers et sources
+## 📚 Règles métiers et sources
 
-### Contexte légal
+### 📘 Contexte légal
 
 La résiliation d’un contrat d’assurance en Belgique est encadrée par différentes lois, évoluant dans le temps pour assouplir les conditions pour les assurés.
 
@@ -60,18 +62,18 @@ La résiliation d’un contrat d’assurance en Belgique est encadrée par diff�
   - [Loi du 4 avril 2014 sur les assurances](https://etaamb.openjustice.be/fr/loi-du-04-avril-2014_n2014011239.html)
 
 - **Depuis le 1er octobre 2024**  
-  Une réforme permet une résiliation plus souple avec un **préavis réduit à 2 mois**, même pour les contrats reconduits tacitement. Cette mesure vise renforcer les droits des consommateurs.  
+  Une réforme permet une résiliation plus souple avec un **préavis réduit à 2 mois**, même pour les contrats reconduits tacitement. Cette mesure vise à renforcer les droits des consommateurs.  
   - [Nouvelle règle : résumé par Vanbreda Risk & Benefits](https://www.vanbreda.be/en/insights/new-cancellation-rules-for-insurance-contracts-from-1-october-2024?utm_source=chatgpt.com)  
   - [Ressource officielle – SPF Économie](https://economie.fgov.be/en/themes/financial-services/insurance/insurance-contract/terminating-insurance-contract?utm_source=chatgpt.com)
 
 
-### Modélisation technique
+### 🧠 Modélisation technique
 
 - Le calcul de résiliation tient compte **des renouvellements annuels** du contrat.
 - La **date de prise d’effet** sert de référence pour estimer la prochaine échéance.
 - Le module applique dynamiquement la **bonne politique légale** (avant ou après 01/10/2024) selon cette échéance.
 
-## Structure du module
+## 🗂️ Structure du module
 
 ```bash
 contract_termination/
@@ -91,10 +93,39 @@ contract_termination/
 └── README.md                            # Documentation du module
 ```
 
-## Tests
+## 🧪 Tests
 
 Des tests unitaires sont disponibles et peuvent être lancés avec RSpec via la commande :
 
 ```bash
 rspec
 ```
+
+## 🧩 Évolutivité
+
+Le module `ContractTermination` a été conçu selon des principes de **modularité** et de **séparation des responsabilités**, ce qui facilite son extension et sa maintenance.
+
+### 💡 Possibilités d'évolution
+
+- **Ajout de nouveaux types de contrats**  
+  Le système peut facilement être étendu pour gérer d'autres types de contrats (ex. : `:rc_family`, `:travel`, `:business`, etc.) en adaptant la validation dans `Contract` et la logique de sélection de politique.
+
+- **Ajout de nouvelles politiques légales**  
+  Il suffit d’ajouter une nouvelle classe dans le dossier `policies/` et de l’enregistrer dans `PolicySelector` en fonction de sa date d’entrée en vigueur.
+
+- **Internationalisation ou adaptation par pays**  
+  Le système pourrait être étendu pour prendre en compte des règles différentes par région ou pays (par exemple, via un champ `jurisdiction`).
+
+- **Refactorisation vers une API publique ou un microservice**  
+  Si besoin, ce module pourrait devenir un service indépendant (microservice) ou exposé via une interface HTTP, grâce à sa logique encapsulée et sans dépendance à Rails.
+
+### ✅ Bonnes pratiques appliquées
+
+- Encapsulation métier via des objets comme `Contract` et `TerminationRequest`
+- Sélection dynamique de logique métier avec `PolicySelector`
+- Découplage total des couches (aucune dépendance à Rails)
+- Code prêt à être testé, surveillé et versionné proprement
+
+---
+
+Le module est donc prêt à évoluer au rythme des besoins métier ou réglementaires, sans impact majeur sur l'existant.
