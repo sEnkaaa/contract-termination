@@ -11,6 +11,6 @@ class TerminationRequest
   private
 
   def validate!
-    raise ArgumentError, "requested_termination_date must be a Date" unless requested_termination_date.is_a?(Date)
+    raise ArgumentError, 'requested_termination_date must be a Date' unless requested_termination_date.is_a?(Date)
   end
 end

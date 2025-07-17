@@ -9,15 +9,13 @@ module ContractTermination
     def initialize(contract_type:, initial_effective_start_date:)
       @contract_type = contract_type
       @initial_effective_start_date = initial_effective_start_date
-      
+
       validate!
     end
 
     def current_effective_start_date(reference_date = Date.today)
       date = initial_effective_start_date
-      while date.next_year <= reference_date
-        date = date.next_year
-      end
+      date = date.next_year while date.next_year <= reference_date
       date
     end
 
@@ -29,12 +27,13 @@ module ContractTermination
 
     def validate!
       unless VALID_CONTRACT_TYPES.include?(contract_type)
-        raise ArgumentError, "Invalid contract_type: #{contract_type.inspect}. Valid types: #{VALID_CONTRACT_TYPES.join(', ')}"
+        raise ArgumentError,
+              "Invalid contract_type: #{contract_type.inspect}. Valid types: #{VALID_CONTRACT_TYPES.join(', ')}"
       end
 
-      unless initial_effective_start_date.is_a?(Date)
-        raise ArgumentError, "initial_effective_start_date must be a Date (got #{initial_effective_start_date.class})"
-      end
+      return if initial_effective_start_date.is_a?(Date)
+
+      raise ArgumentError, "initial_effective_start_date must be a Date (got #{initial_effective_start_date.class})"
     end
   end
 end
