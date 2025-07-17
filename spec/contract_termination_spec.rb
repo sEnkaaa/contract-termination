@@ -67,7 +67,7 @@ RSpec.describe ContractTermination do
             contract_initial_effective_start_date: Date.new(2024, 3, 1),
             requested_termination_date: Date.new(2024, 8, 1)
           )
-        end.to raise_error(ArgumentError, /Invalid contract_type/)
+        end.to raise_error(NotImplementedError, /not supported/)
       end
     end
   end

@@ -1,20 +1,20 @@
 require 'spec_helper'
-require_relative '../../../lib/contract_termination/policies/base_policy'
-require_relative '../../../lib/contract_termination/policies/policy_2014_04_04'
-require_relative '../../../lib/contract_termination/policies/policy_2024_10_01'
-require_relative '../../../lib/contract_termination/termination_request'
-require_relative '../../../lib/contract_termination/contract'
+require_relative '../../../../lib/contract_termination/iard/policies/base_policy'
+require_relative '../../../../lib/contract_termination/iard/policies/policy_2014_04_04'
+require_relative '../../../../lib/contract_termination/iard/policies/policy_2024_10_01'
+require_relative '../../../../lib/contract_termination/iard/termination_request'
+require_relative '../../../../lib/contract_termination/iard/contract'
 require 'date'
 
-RSpec.describe ContractTermination::Policies do
-  describe ContractTermination::Policies::BasePolicy do
+RSpec.describe ContractTermination::Iard::Policies do
+  describe ContractTermination::Iard::Policies::BasePolicy do
     describe '.earliest_termination_date' do
       it 'raises NotImplementedError when called directly' do
-        contract = ContractTermination::Contract.new(
+        contract = ContractTermination::Iard::Contract.new(
           contract_type: :iard,
           initial_effective_start_date: Date.new(2024, 1, 1)
         )
-        termination_request = ContractTermination::TerminationRequest.new(
+        termination_request = ContractTermination::Iard::TerminationRequest.new(
           contract: contract,
           requested_termination_date: Date.today
         )
@@ -28,22 +28,22 @@ RSpec.describe ContractTermination::Policies do
 
   describe 'Concrete Policies implementation' do
     let(:contract) do
-      ContractTermination::Contract.new(
+      ContractTermination::Iard::Contract.new(
         contract_type: :iard,
         initial_effective_start_date: Date.new(2023, 1, 1)
       )
     end
 
     let(:termination_request) do
-      ContractTermination::TerminationRequest.new(
+      ContractTermination::Iard::TerminationRequest.new(
         contract: contract,
         requested_termination_date: Date.today
       )
     end
 
     [
-      ContractTermination::Policies::Policy20140404,
-      ContractTermination::Policies::Policy20241001
+      ContractTermination::Iard::Policies::Policy20140404,
+      ContractTermination::Iard::Policies::Policy20241001
     ].each do |policy_class|
       it "#{policy_class} implements earliest_termination_date without raising error" do
         expect do

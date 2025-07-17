@@ -1,9 +1,8 @@
-
 require 'spec_helper'
 require 'date'
-require_relative '../../lib/contract_termination/contract'
+require_relative '../../../lib/contract_termination/iard/contract'
 
-RSpec.describe ContractTermination::Contract do
+RSpec.describe ContractTermination::Iard::Contract do
   let(:contract_type) { :iard }
   let(:initial_date) { Date.new(2025, 1, 20) }
 

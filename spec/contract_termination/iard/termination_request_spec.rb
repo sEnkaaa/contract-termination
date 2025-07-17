@@ -1,11 +1,11 @@
 require 'spec_helper'
 require 'date'
-require_relative '../../lib/contract_termination/termination_request'
-require_relative '../../lib/contract_termination/contract'
+require_relative '../../../lib/contract_termination/iard/termination_request'
+require_relative '../../../lib/contract_termination/iard/contract'
 
-RSpec.describe ContractTermination::TerminationRequest do
+RSpec.describe ContractTermination::Iard::TerminationRequest do
   let(:contract) do
-    ContractTermination::Contract.new(
+    ContractTermination::Iard::Contract.new(
       contract_type: :iard,
       initial_effective_start_date: Date.new(2024, 1, 1)
     )

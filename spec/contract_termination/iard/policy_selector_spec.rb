@@ -1,36 +1,36 @@
 require 'spec_helper'
-require_relative '../../lib/contract_termination/policy_selector'
-require_relative '../../lib/contract_termination/termination_request'
+require_relative '../../../lib/contract_termination/iard/policy_selector'
+require_relative '../../../lib/contract_termination/iard/termination_request'
 
-RSpec.describe ContractTermination::PolicySelector do
+RSpec.describe ContractTermination::Iard::PolicySelector do
   describe '.select_policy' do
     context 'with iard contract' do
       it 'returns Policy20241001 if contract started on or after 2024-10-01' do
-        contract = ContractTermination::Contract.new(
+        contract = ContractTermination::Iard::Contract.new(
           contract_type: :iard,
           initial_effective_start_date: Date.new(2024, 10, 1)
         )
-        request = ContractTermination::TerminationRequest.new(
+        request = ContractTermination::Iard::TerminationRequest.new(
           contract: contract,
           requested_termination_date: Date.new(2025, 1, 1)
         )
 
         result = described_class.select_policy(request)
-        expect(result).to eq(ContractTermination::Policies::Policy20241001)
+        expect(result).to eq(ContractTermination::Iard::Policies::Policy20241001)
       end
 
       it 'returns Policy20140404 if contract started before 2024-10-01' do
-        contract = ContractTermination::Contract.new(
+        contract = ContractTermination::Iard::Contract.new(
           contract_type: :iard,
           initial_effective_start_date: Date.new(2024, 9, 30)
         )
-        request = ContractTermination::TerminationRequest.new(
+        request = ContractTermination::Iard::TerminationRequest.new(
           contract: contract,
           requested_termination_date: Date.new(2025, 1, 1)
         )
 
         result = described_class.select_policy(request)
-        expect(result).to eq(ContractTermination::Policies::Policy20140404)
+        expect(result).to eq(ContractTermination::Iard::Policies::Policy20140404)
       end
     end
 
@@ -40,9 +40,9 @@ RSpec.describe ContractTermination::PolicySelector do
                                         contract_type: :life,
                                         initial_effective_start_date: Date.new(2024, 9, 30))
 
-        allow(fake_contract).to receive(:is_a?).with(ContractTermination::Contract).and_return(true)
+        allow(fake_contract).to receive(:is_a?).with(ContractTermination::Iard::Contract).and_return(true)
 
-        request = ContractTermination::TerminationRequest.new(
+        request = ContractTermination::Iard::TerminationRequest.new(
           contract: fake_contract,
           requested_termination_date: Date.new(2025, 1, 1)
         )
@@ -58,7 +58,7 @@ RSpec.describe ContractTermination::PolicySelector do
         fake_contract = instance_double('FakeContract')
 
         expect do
-          ContractTermination::TerminationRequest.new(
+          ContractTermination::Iard::TerminationRequest.new(
             contract: fake_contract,
             requested_termination_date: Date.new(2025, 1, 1)
           )
