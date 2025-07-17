@@ -10,13 +10,12 @@ module ContractTermination
         contract = termination_request.contract
 
         requested_termination_date = termination_request.requested_termination_date
-        contract.current_effective_start_date(requested_termination_date)
 
         unless contract.renewed?(requested_termination_date)
           return Policy20140404.earliest_termination_date(termination_request)
         end
 
-        requested_termination_date.next_month(NOTICE_MONTHS).next_day
+        requested_termination_date.next_month(NOTICE_MONTHS)
       end
     end
   end

@@ -12,7 +12,8 @@ module ContractTermination
 
       case contract.contract_type
       when :iard
-        if contract.initial_effective_start_date >= Date.new(2024, 10, 1)
+        if contract.current_effective_start_date(termination_request.requested_termination_date) >= Date.new(2024, 10,
+                                                                                                             1)
           Policies::Policy20241001
         else
           Policies::Policy20140404
