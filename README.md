@@ -2,7 +2,7 @@
 
 ## 🧾 Description
 
-`ContractTermination` est un module Ruby permettant de calculer automatiquement la **première date légale possible de résiliation** d’un contrat d’assurance selon les règles légales en vigueur, notamment la nouvelle réglementation entrée en vigueur en le 1er octobre 2024.  
+`ContractTermination` est un module Ruby permettant de calculer automatiquement la **première date possible de résiliation** d’un contrat d’assurance selon les règles légales, notamment la nouvelle réglementation entrée en vigueur en le 1er octobre 2024.  
 
 Ce module est conçu pour être intégré facilement dans n’importe quelle partie d’une application Ruby, sans dépendance à Rails.
 
