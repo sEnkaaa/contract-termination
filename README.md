@@ -25,13 +25,16 @@ Ce module applique ces nouvelles règles de manière fiable et automatisée.
 
 ## 🚀 Utilisation
 
-Méthode principale à appeler :
+Voici un exemple de code pour lancer le calcul de la date de résiliation la plus proche pour un contrat IARD :
 
 ```ruby
+require_relative 'contract_termination/lib/contract_termination'
+require 'date'
+
 result = ContractTermination.earliest_termination_date(
   contract_type: :iard,
   contract_initial_effective_start_date: Date.new(2023, 11, 1),
-  requested_termination_date: Date.new(2024, 7, 1)
+  requested_termination_date: Date.today
 )
 
 puts "Date de résiliation la plus proche : #{result}"
@@ -64,22 +67,30 @@ Une instance `Date` représentant **la première date légale** à laquelle le c
 
 ### 📘 Cadre légal
 
-- **Avant le 1er octobre 2024**  
-  La résiliation nécessitait un **préavis de 3 mois avant la date d’anniversaire du contrat**. Si ce délai n'était pas respecté, le contrat était automatiquement renouvelé pour un an.  
-  - [Loi du 4 avril 2014](https://etaamb.openjustice.be/fr/loi-du-04-avril-2014_n2014011239.html)
-
-- **Depuis le 1er octobre 2024**  
-  Une réforme permet une résiliation plus souple avec un **préavis réduit à 2 mois**, même pour les contrats reconduits tacitement. Cette mesure vise à renforcer les droits des consommateurs.  
-  - [Résumé Vanbreda](https://www.vanbreda.be/en/insights/new-cancellation-rules-for-insurance-contracts-from-1-october-2024)  
-  - [SPF Économie](https://economie.fgov.be/en/themes/financial-services/insurance/insurance-contract/terminating-insurance-contract)
+#### 📆 **Avant le 1er octobre 2024**
+- Les contrats d’assurance non-vie, tacitement reconductibles, étaient soumis à la **règle dite “des 3 mois”**.
+- Résiliation possible **uniquement à l’échéance annuelle**, avec un **préavis de 3 mois**.  
+  Si ce délai n’était pas respecté, le contrat était reconduit automatiquement pour une nouvelle période d’un an.
+- 🔗 [Loi du 4 avril 2014](https://etaamb.openjustice.be/fr/loi-du-04-avril-2014_n2014011239.html)
 
 ---
 
-## 🧠 Modélisation technique
+#### 📆 **Depuis le 1er octobre 2024** (réforme applicable)
+- La **loi du 9 octobre 2023**, entrée en vigueur le **1er octobre 2024**, introduit un droit de résiliation **plus souple**.
+- Pour les **contrats IARD reconduits tacitement** et **ayant plus d’un an d’ancienneté**, le preneur peut **résilier à tout moment**, sans frais, moyennant **un préavis de 2 mois**.
+- **⚠️ Si le contrat a moins d’un an**, cette faculté **n’est pas encore ouverte** : on applique alors par **fallback** les règles antérieures (préavis de 3 mois à l’échéance annuelle).
+- 🔗 [Loi du 9 octobre 2023](https://etaamb.openjustice.be/fr/loi-du-09-octobre-2023_n2023046177.html)  
+- 🔗 [Résumé Vanbreda](https://www.vanbreda.be/en/insights/new-cancellation-rules-for-insurance-contracts-from-1-october-2024)  
+- 🔗 [SPF Économie – Résiliation](https://economie.fgov.be/en/themes/financial-services/insurance/insurance-contract/terminating-insurance-contract)
 
-- Le calcul de résiliation tient compte **des renouvellements annuels** du contrat.
-- La **date de prise d’effet** sert de référence pour estimer la prochaine échéance.
-- Le module applique dynamiquement la **bonne politique légale** (avant ou après 01/10/2024) selon cette échéance.
+---
+
+#### ⚖️ En résumé
+| Situation du contrat                           | Loi applicable         | Préavis         | Conditions requises                      |
+|------------------------------------------------|------------------------|------------------|------------------------------------------|
+| Conclu avant la réforme                        | Loi de 2014            | 3 mois           | Résiliation uniquement à l’échéance      |
+| Conclu après réforme, **< 1 an**               | Loi de 2014 *(fallback)* | 3 mois        | Idem, réforme non encore applicable      |
+| Conclu après réforme, **>= 1 an**               | Loi de 2023            | 2 mois           | Résiliation libre, même hors échéance    |
 
 ---
 
